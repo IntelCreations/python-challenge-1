@@ -118,76 +118,88 @@ while place_order:
                     }
                     i += 1
             # 2. Ask customer to input menu item number
-            menu_selection = input("Enter your menu item number")
+            menu_selection = input("Enter a number: ")
+
 
             # 3. Check if the customer typed a number
             if menu_selection.isdigit():
-                
+
+
                 # Convert the menu selection to an integer
                 menu_selection = int(menu_selection)
-                # 4. Check if the menu selection is in the menu items
+
+                # 4. Check if the menu selection is in the menu items                
                 if menu_selection in menu_items.keys():
-
+                          
                     # Store the item name as a variable
-                    item_name = menu_items[menu_selection]["Item name"]
-
+                    item = menu_items[menu_selection]["Item name"]
 
                     # Ask the customer for the quantity of the menu item
-                    quantity = input(f"How many {item_name} would you like?")
+                    user_input = input("How many would you like to order?")
 
                     # Check if the quantity is a number, default to 1 if not
-                    if not quantity.isdigit():
-                        quantity = 1 
+                    if not user_input.isdigit():
+            
+                        quantity = 1
+                        #If it is a number, convert to integer
                     else:
-                        quantity = int(quantity)
-
-
+                        quantity = int(user_input)
+        
+                          
                     # Add the item name, price, and quantity to the order list
-                    item_details = {"price": value}
-                    price = item_details ["price"]
-                    order.append((item_name, price, quantity))
+                    order.append({"Item name": item, "Price": menu_items[menu_selection]["Price"], "Quantity": quantity})
 
                     # Tell the customer that their input isn't valid
-                    print("Invalid input. Please enter a number.")
-
+                else:
+                    print("You entered an invalid number. Please try again.")
 
                 # Tell the customer they didn't select a menu option
-                print("You didn't select a menu option")
-        else:
-            # Tell the customer they didn't select a menu option
-            print(f"{menu_category} was not a menu option.")
-    else:
-        # Tell the customer they didn't select a number
-        print("You didn't select a number.")
 
-    while True:
+            else:
+                print("You didn't select a menu option.")
+
+            # Tell the customer they didn't select a menu option
+
+        else:
+            print("You didn't select a menu option")
+
+    else:
+     print("You didn't select a number.") 
+        # Tell the customer they didn't select a number
+
         # Ask the customer if they would like to order anything else
-        keep_ordering = input("Would you like to keep ordering? (Y)es or (N)o ")
+    keep_ordering = input("Would you like to keep ordering? (y)es or (n)o ")
 
         # 5. Check the customer's input
-
-                # Keep ordering
-        if keep_ordering.lower() == 'y':
-          continue 
-
+    match keep_ordering.lower():
+            # Customer chose yes
+            case 'y':
+                # Keep ordering  
+                place_order = True
+                continue
+        
                 # Exit the keep ordering question loop
-        elif keep_ordering.lower() == 'n':
-            place_order = False   
-            break         
-              
-                # Complete the order  
-order = (item_name, price, quantity)
-                           
+                break
+            # Customer chose no
+            case 'n':
+                # Complete the order
+                place_order = False
+                # Since the customer decided to stop ordering, thank them for their order
+                print("Thank you for your order.")
+                # Exit the keep ordering question loop
+                break
+            
+                place_order = False
+
                 # Since the customer decided to stop ordering, thank them for
-                # their order
-print("Thank you for your order.")  
-          
+                # their order``
+                print("Thank you for your order!")
+                
                 # Exit the keep ordering question loop
-                             
+                break
 
                 # Tell the customer to try again
-print("Please try again")
-
+                print("Please try again.")
 
 # Print out the customer's order
 print("This is what we are preparing for you.\n")
@@ -199,45 +211,29 @@ print("Item name                 | Price  | Quantity")
 print("--------------------------|--------|----------")
 
 # 6. Loop through the items in the customer's order
-for item_name, price, quantity in order:
-    print(f"{quantity} x {item_name} at ${price}each")
 
- 
     # 7. Store the dictionary items as variables
-menu_items = {item_name, price, quantity}
+for order_item in order:
+    item_name = order_item["Item name"]
+    price = order_item["Price"]
+    quantity = order_item["Quantity"]       
 
-
-
-
+    
     # 8. Calculate the number of spaces for formatted printing
-text = {order}
-total_width = 25
-text_length = len(text)
-spaces_needed = total_width-text_length 
-print(" " * spaces_needed + text)
+    price_spaces = " " * (6 - len(str(price)))
+
 
     # 9. Create space strings
-spaces_needed = space_string = ' '*spaces_needed
-print (f" '{space_string}'")
-
-
-
+    name_spaces = " " * (24 - len(item_name))
 
     # 10. Print the item name, price, and quantity
-print(item_name,price, quantity)
-
+    print(f"{item_name}{name_spaces}|${price}{price_spaces}| {quantity}")
 
 # 11. Calculate the cost of the order using list comprehension
-total_cost = sum(item['price'] * item['quantity'] 
-for item in order)
-print(f"\n The total cost of the order is:${total_cost:.2f}")
+total_price = sum(item['Price'] * item['Quantity'] for item in order)
 
-# Multiply the price by quantity for each item in the order list, then sum 
-
-
-        
-
-
-
-
+# Multiply the price by quantity for each item in the order list, then sum()
+print(f"\nTotal price: ${total_price:.2f}")
+ 
 # and print the prices.
+print(f"Item name: {item_name}, Price: ${price}, Quantity: {quantity}")
